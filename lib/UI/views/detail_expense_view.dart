@@ -30,12 +30,21 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _nameController.text = widget.expenseModel!.name;
-    _categoryController.text = widget.expenseModel!.category;
-    _dateController.text = widget.expenseModel!.date;
-    _amountController.text = widget.expenseModel!.amount.toString();
+    if (widget.expenseModel != null) {
+      _nameController.text = widget.expenseModel!.name;
+      _categoryController.text = widget.expenseModel!.category;
+      _dateController.text = widget.expenseModel!.date;
+      _amountController.text = widget.expenseModel!.amount.toString();
+
+      _selectedCategory = getCategories().firstWhere(
+        (element) => element.title == widget.expenseModel!.category,
+      );
+
+      if (_selectedCategory != null) {
+        _categoryController.text = _selectedCategory!.title;
+      }
+    }
   }
 
   @override
@@ -48,11 +57,9 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
       ),
       body: BlocListener<ExpenseBloc, ExpenseState>(
         listener: (context, state) {
-          // TODO: implement listener
-
           if (state is DeleteExpenseSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Data Pengeluaran Berhasil Dihapus!"),
+              content: const Text("Data Pengeluaran Berhasil Dihapus!"),
               backgroundColor: greenColor,
             ));
             Navigator.pop(context);
@@ -60,7 +67,7 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
 
           if (state is UpdateExpenseSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Data Pengeluaran Berhasil Diubah!"),
+              content: const Text("Data Pengeluaran Berhasil Diubah!"),
               backgroundColor: greenColor,
             ));
             Navigator.pop(context);
@@ -94,10 +101,8 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
                       ? Padding(
                           padding: const EdgeInsets.all(10.0),
                           child: SvgPicture.asset(
-                            widget.expenseModel!.imageCategory,
-                            color: widget.expenseModel!.colorCategory != 0
-                                ? Color(widget.expenseModel!.colorCategory)
-                                : blackColor,
+                            _selectedCategory!.image,
+                            color: _selectedCategory!.color,
                           ),
                         )
                       : null,
@@ -138,27 +143,30 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
               ),
               const SizedBox(height: 32),
               CustomFilledButton(
-                  title: "Ubah Pengeluaran",
-                  color: greenColor,
-                  onPressed: () async {
-                    context.read<ExpenseBloc>().add(UpdateExpense(ExpenseModel(
+                title: "Ubah Pengeluaran",
+                color: greenColor,
+                onPressed: () async {
+                  context.read<ExpenseBloc>().add(UpdateExpense(ExpenseModel(
                         id: widget.expenseModel!.id,
-                        imageCategory: "",
-                        colorCategory: 0,
+                        imageCategory: _selectedCategory!.image,
+                        colorCategory: _selectedCategory!.color.value,
                         name: _nameController.text,
                         category: _categoryController.text,
                         date: _dateController.text,
-                        amount: _amountController.text)));
-                  }),
+                        amount: _amountController.text,
+                      )));
+                },
+              ),
               const SizedBox(height: 20),
               CustomFilledButton(
-                  title: "Hapus Pengeluaran",
-                  color: redColor,
-                  onPressed: () async {
-                    context
-                        .read<ExpenseBloc>()
-                        .add(DeleteExpense(widget.expenseModel!.id!));
-                  }),
+                title: "Hapus Pengeluaran",
+                color: redColor,
+                onPressed: () async {
+                  context
+                      .read<ExpenseBloc>()
+                      .add(DeleteExpense(widget.expenseModel!.id!));
+                },
+              ),
             ],
           ),
         ),
@@ -188,13 +196,11 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: Icon(Icons.close),
+                  icon: const Icon(Icons.close),
                 ),
               ],
             ),
-            const SizedBox(
-              height: 27,
-            ),
+            const SizedBox(height: 27),
             Expanded(
               child: GridView.builder(
                 controller: scrollController,
@@ -223,9 +229,7 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
                             color: category.color,
                             borderRadius: BorderRadius.circular(50),
                           ),
-                          child: SvgPicture.asset(
-                            category.image,
-                          ),
+                          child: SvgPicture.asset(category.image),
                         ),
                         const SizedBox(height: 8),
                         Text(

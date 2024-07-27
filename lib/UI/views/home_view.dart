@@ -52,7 +52,7 @@ class _HomeViewState extends State<HomeView> {
                   Row(
                     children: [
                       Text(
-                        "Halo, User!",
+                        "Halo, Achmad!",
                         style: blackTextStyle.copyWith(
                             fontSize: 18, fontWeight: bold),
                       ),
