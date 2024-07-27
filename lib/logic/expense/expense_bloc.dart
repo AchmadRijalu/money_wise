@@ -16,11 +16,10 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
           final expenses = await ExpenseDb().getAllExpenses();
           final groupedExpenses = _expensesByDate(expenses);
           final accumulatedExpenses = _accumulateExpensesByCategory(expenses);
-          final todayExpenses = _accumulateExpensesByDate(expenses, 'Hari Ini');
           final monthExpenses =
               _accumulateExpensesByDate(expenses, 'Bulan Ini');
-          emit(GetAllExpensesSuccess(groupedExpenses, accumulatedExpenses,
-              todayExpenses, monthExpenses));
+          emit(GetAllExpensesSuccess(
+              groupedExpenses, accumulatedExpenses, monthExpenses));
         } catch (e) {
           emit(ExpensesFailed(e.toString()));
         }
@@ -86,7 +85,6 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       List<ExpenseModel> expenses, String dateType) {
     double total = 0.0;
     final DateTime now = DateTime.now();
-    final DateTime today = DateTime(now.year, now.month, now.day);
     final DateTime startOfMonth = DateTime(now.year, now.month, 1);
     final DateFormat fullDateFormat = DateFormat('EEEE, dd MMMM yyyy', 'id_ID');
 
@@ -94,9 +92,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       try {
         DateTime expenseDate = fullDateFormat.parse(expense.date);
 
-        if (dateType == 'Hari Ini' && expenseDate == today) {
-          total += double.parse(expense.amount);
-        } else if (dateType == 'Bulan Ini' &&
+        if (dateType == 'Bulan Ini' &&
             expenseDate.isAfter(startOfMonth.subtract(Duration(days: 1))) &&
             expenseDate.isBefore(now.add(Duration(days: 1)))) {
           total += double.parse(expense.amount);

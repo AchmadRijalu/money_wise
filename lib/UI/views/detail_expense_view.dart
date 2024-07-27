@@ -146,15 +146,27 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
                 title: "Ubah Pengeluaran",
                 color: greenColor,
                 onPressed: () async {
-                  context.read<ExpenseBloc>().add(UpdateExpense(ExpenseModel(
-                        id: widget.expenseModel!.id,
-                        imageCategory: _selectedCategory!.image,
-                        colorCategory: _selectedCategory!.color.value,
-                        name: _nameController.text,
-                        category: _categoryController.text,
-                        date: _dateController.text,
-                        amount: _amountController.text,
-                      )));
+                  if (_nameController.text == "" ||
+                      _categoryController.text == "" ||
+                      _dateController.text == "" ||
+                      _amountController.text == "") {
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content:
+                          const Text("Data Pengeluaran Tidak Boleh Kosong!"),
+                      backgroundColor: redColor,
+                    ));
+                    return;
+                  } else {
+                    context.read<ExpenseBloc>().add(UpdateExpense(ExpenseModel(
+                          id: widget.expenseModel!.id,
+                          imageCategory: _selectedCategory!.image,
+                          colorCategory: _selectedCategory!.color.value,
+                          name: _nameController.text,
+                          category: _categoryController.text,
+                          date: _dateController.text,
+                          amount: _amountController.text,
+                        )));
+                  }
                 },
               ),
               const SizedBox(height: 20),
