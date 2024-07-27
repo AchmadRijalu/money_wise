@@ -141,8 +141,13 @@ class _HomeViewState extends State<HomeView> {
                         if (state.expenses.isEmpty) {
                           return Column(
                             children: [
-                              SvgPicture.asset("assets/images/image_empty.svg", width: 204,),
-                              const SizedBox(height: 12,),
+                              SvgPicture.asset(
+                                "assets/images/image_empty.svg",
+                                width: 204,
+                              ),
+                              const SizedBox(
+                                height: 12,
+                              ),
                               Text(
                                 "Belum ada pengeluaran",
                                 style: blackTextStyle.copyWith(
@@ -172,11 +177,12 @@ class _HomeViewState extends State<HomeView> {
                                     itemBuilder: (context, index) {
                                       final expenseModel = expenses[index];
                                       return ListExpenseItem(
-                                        onPressed: () async{
-                                          await Navigator.pushNamed(context, DetailExpenseView.routeName,
-                                              arguments: expenseModel);
-                                          _expenseBloc.add(GetAllExpenses());
-                                        },
+                                          onPressed: () async {
+                                            await Navigator.pushNamed(context,
+                                                DetailExpenseView.routeName,
+                                                arguments: expenseModel);
+                                            _expenseBloc.add(GetAllExpenses());
+                                          },
                                           expenseModel: expenseModel);
                                     },
                                   ),

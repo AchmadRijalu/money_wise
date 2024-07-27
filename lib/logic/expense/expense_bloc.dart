@@ -38,7 +38,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       if (event is DeleteExpense) {
         try {
           await ExpenseDb().deleteExpense(event.id);
-          add(GetAllExpenses());
+          emit(DeleteExpenseSuccess(event.id));
         } catch (e) {
           emit(ExpensesFailed(e.toString()));
         }
@@ -47,7 +47,7 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       if (event is UpdateExpense) {
         try {
           await ExpenseDb().updateExpense(event.expense);
-          add(GetAllExpenses());
+          emit(UpdateExpenseSuccess(event.expense));
         } catch (e) {
           emit(ExpensesFailed(e.toString()));
         }

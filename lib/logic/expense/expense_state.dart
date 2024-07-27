@@ -39,4 +39,22 @@ final class AddExpenseSuccess extends ExpenseState {
   List<Object> get props => [expense];
 }
 
+final class DeleteExpenseSuccess extends ExpenseState {
+  final int id;
+
+  DeleteExpenseSuccess(this.id);
+
+  @override
+  List<Object> get props => [id];
+}
+
+final class UpdateExpenseSuccess extends ExpenseState {
+  final ExpenseModel expense;
+
+  UpdateExpenseSuccess(this.expense);
+
+  @override
+  List<Object> get props => [expense];
+}
+
 

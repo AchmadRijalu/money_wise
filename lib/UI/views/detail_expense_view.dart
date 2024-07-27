@@ -1,6 +1,7 @@
 import 'package:bottom_sheet/bottom_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:money_wise/UI/widgets/button.dart';
 import 'package:money_wise/UI/widgets/forms.dart';
@@ -45,85 +46,121 @@ class _DetailExpenseViewState extends State<DetailExpenseView> {
         title: Text('Detail Pengeluaran',
             style: blackTextStyle.copyWith(fontWeight: bold)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 38),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            CustomFormField(
-              title: "Nama Pengeluaran",
-              controller: _nameController,
-            ),
-            const SizedBox(height: 20),
-            TextFormField(
-              readOnly: true,
-              onTap: () {
-                showFlexibleBottomSheet(
-                  minHeight: 0,
-                  initHeight: 0.5,
-                  maxHeight: 0.5,
-                  context: context,
-                  builder: _buildBottomSheet,
-                );
-              },
-              cursorColor: blackColor,
-              controller: _categoryController,
-              decoration: InputDecoration(
-                prefixIcon: _selectedCategory != null
-                    ? Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: SvgPicture.asset(
-                          _selectedCategory!.image,
-                          color: _selectedCategory!.color,
-                        ),
-                      )
-                    : null,
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide(color: blackColor, width: 2.0),
-                ),
-                hintText: "Category",
-                contentPadding: const EdgeInsets.all(12),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                suffix: Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(50),
-                    color: lightGreyColor,
+      body: BlocListener<ExpenseBloc, ExpenseState>(
+        listener: (context, state) {
+          // TODO: implement listener
+
+          if (state is DeleteExpenseSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Data Pengeluaran Berhasil Dihapus!"),
+              backgroundColor: greenColor,
+            ));
+            Navigator.pop(context);
+          }
+
+          if (state is UpdateExpenseSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Data Pengeluaran Berhasil Diubah!"),
+              backgroundColor: greenColor,
+            ));
+            Navigator.pop(context);
+          }
+        },
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 38),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomFormField(
+                title: "Nama Pengeluaran",
+                controller: _nameController,
+              ),
+              const SizedBox(height: 20),
+              TextFormField(
+                readOnly: true,
+                onTap: () {
+                  showFlexibleBottomSheet(
+                    minHeight: 0,
+                    initHeight: 0.5,
+                    maxHeight: 0.5,
+                    context: context,
+                    builder: _buildBottomSheet,
+                  );
+                },
+                cursorColor: blackColor,
+                controller: _categoryController,
+                decoration: InputDecoration(
+                  prefixIcon: _selectedCategory != null
+                      ? Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: SvgPicture.asset(
+                            widget.expenseModel!.imageCategory,
+                            color: widget.expenseModel!.colorCategory != 0
+                                ? Color(widget.expenseModel!.colorCategory)
+                                : blackColor,
+                          ),
+                        )
+                      : null,
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide(color: blackColor, width: 2.0),
                   ),
-                  child: Icon(
-                    Icons.arrow_forward_ios,
-                    color: blackColor,
-                    size: 18,
+                  hintText: "Category",
+                  contentPadding: const EdgeInsets.all(12),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  suffix: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: lightGreyColor,
+                    ),
+                    child: Icon(
+                      Icons.arrow_forward_ios,
+                      color: blackColor,
+                      size: 18,
+                    ),
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 20),
-            CustomFormFieldDate(
-              controller: _dateController,
-              title: "Tanggal Pengeluaran",
-            ),
-            const SizedBox(height: 20),
-            CustomFormField(
-              title: "Nominal",
-              formatter: FilteringTextInputFormatter.digitsOnly,
-              controller: _amountController,
-              keyBoardType: TextInputType.number,
-            ),
-            const SizedBox(height: 32),
-            CustomFilledButton(
-                title: "Ubah Pengeluaran",
-                color: greenColor,
-                onPressed: () async {}),
-            const SizedBox(height: 20),
-            CustomFilledButton(
-                title: "Hapus Pengeluaran",
-                color: redColor,
-                onPressed: () async {}),
-          ],
+              const SizedBox(height: 20),
+              CustomFormFieldDate(
+                controller: _dateController,
+                title: "Tanggal Pengeluaran",
+              ),
+              const SizedBox(height: 20),
+              CustomFormField(
+                title: "Nominal",
+                formatter: FilteringTextInputFormatter.digitsOnly,
+                controller: _amountController,
+                keyBoardType: TextInputType.number,
+              ),
+              const SizedBox(height: 32),
+              CustomFilledButton(
+                  title: "Ubah Pengeluaran",
+                  color: greenColor,
+                  onPressed: () async {
+                    context.read<ExpenseBloc>().add(UpdateExpense(ExpenseModel(
+                        id: widget.expenseModel!.id,
+                        imageCategory: "",
+                        colorCategory: 0,
+                        name: _nameController.text,
+                        category: _categoryController.text,
+                        date: _dateController.text,
+                        amount: _amountController.text)));
+                  }),
+              const SizedBox(height: 20),
+              CustomFilledButton(
+                  title: "Hapus Pengeluaran",
+                  color: redColor,
+                  onPressed: () async {
+                    context
+                        .read<ExpenseBloc>()
+                        .add(DeleteExpense(widget.expenseModel!.id!));
+                  }),
+            ],
+          ),
         ),
       ),
     );
