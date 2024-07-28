@@ -1,6 +1,6 @@
 ## Money Wise
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+![Uploading Simulator Screenshot - iPhone 15 Pro - 2024-07-28 at 10.58.22.png…]()
 
 An Expense Tracker application was built with Flutter using the local SQLite database. Users can create new expense data based on date, and category. Expenses that are already created have accumulated the amount by month
 
