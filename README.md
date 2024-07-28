@@ -1,16 +1,38 @@
-# money_wise
 
-A new Flutter project.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-## Getting Started
+[![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-This project is a starting point for a Flutter application.
+Explanation
 
-A few resources to get you started if this is your first Flutter project:
+### Built With
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* [![Flutter][Flutter]][Next-url]
+* [![Sqlite][Sqlite]][Sqlite]
+
+
+### Prerequisites
+
+
+* Flutter Pub Get
+  ```sh
+  flutter pub get
+  ```
+
+### Installation
+
+
+ Clone the repo
+   ```sh
+   https://github.com/AchmadRijalu/money_wise.git
+
+<!-- USAGE EXAMPLES -->
+
+## Usage
+
+Usage
+
+
