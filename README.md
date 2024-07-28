@@ -41,6 +41,5 @@ After running all the command above, the Flutter Application is ready to use.
 
 
 ## Usage
-<img src="https://github.com/user-attachments/assets/ad8c7120-2368-4bcd-a25e-59e9ce6dc5fb" alt="Screenshot 1" width="200"/>
-
+https://github.com/user-attachments/assets/ad8c7120-2368-4bcd-a25e-59e9ce6dc5fb
 
