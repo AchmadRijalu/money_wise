@@ -6,11 +6,10 @@ An Expense Tracker application was built with Flutter using the local SQLite dat
 
 ### Built With
 
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
+This application built with these main technologies:
 
-* [![Flutter][Flutter-logo]][Flutter-url]
-* [![Sqlite][Sqlite-logo]][Sqlite-url]
-* [![Flutter-bloc][Flutter-bloc-logo]][Flutter-bloc-url]
+<code><img width="50" src="https://user-images.githubusercontent.com/25181517/186150365-da1eccce-6201-487c-8649-45e9e99435fd.png" alt="Flutter" title="Flutter"/></code>
+<code><img width="50" src="https://github.com/marwin1991/profile-technology-icons/assets/136815194/82df4543-236b-4e45-9604-5434e3faab17" alt="SQLite" title="SQLite"/></code>
 
 ### Prerequisites
 
